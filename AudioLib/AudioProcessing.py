@@ -56,7 +56,7 @@ class AudioProcessing(object):
 		output_delay = delay * self.sample_freq
 
 		for count, e in enumerate(self.audio_data):
-			output_audio[count] = e + self.audio_data[count - output_delay]
+			output_audio[count] = e + self.audio_data[count - int(output_delay)]
 
 		self.audio_data = output_audio
 
