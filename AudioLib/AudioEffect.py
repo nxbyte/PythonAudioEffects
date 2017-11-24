@@ -10,7 +10,7 @@
 	AudioEffect.echo('input.wav', 'output.wav')
 '''
 
-from AudioProcessing import AudioProcessing
+from AudioLib.AudioProcessing import AudioProcessing
 
 class AudioEffect(object):
 
@@ -19,7 +19,7 @@ class AudioEffect(object):
 	@staticmethod
 	def darth_vader(input_path, output_path):
 		'''Applies a Darth Vader effect to a given input'''
-		print 'Not Implemented'
+		print ('Not Implemented')
 
 	@staticmethod
 	def echo(input_path, output_path):
@@ -32,14 +32,14 @@ class AudioEffect(object):
 	@staticmethod
 	def radio(input_path, output_path):
 		'''Applies a radio effect to a given input'''
-		print 'Not Implemented'
+		print ('Not Implemented')
 
 	staticmethod
 	def robotic(input_path, output_path):
 		'''Applies a robotic effect to a given input'''
-		print 'Not Implemented'
+		print ('Not Implemented')
 
 	@staticmethod
 	def ghost(input_path, output_path):
 		'''Applies a ghostly halloween effect to a given input'''
-		print 'Not Implemented'
+		print ('Not Implemented')
