@@ -107,3 +107,15 @@ class AudioProcessing(object):
 			output_audio.append((e[0] / 2) + (e[1] / 2))
 
 		return np.array(output_audio, dtype = 'int16')
+
+	def set_reverb(self, delay):
+		'''Applies an echo that is 0...<input audio duration in seconds> seconds from the beginning'''
+		#=====================================
+	
+		output_audio = read('CH2.wav')
+		output_audio = np.array(output_audio[1],dtype=int16)
+		output_audio = output_audio[0:len(self.audio_data)]
+
+		#out = signal.fftconvolve(self.audio_data, output_audio, mode='same')
+		out = np.convolve(self.audio_data, output_audio, 'same')
+		self.audio_data = out

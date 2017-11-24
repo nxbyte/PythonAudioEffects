@@ -2,5 +2,5 @@
 from AudioLib.AudioEffect import AudioEffect
 
 
-AudioEffect.echo('input.wav',
+AudioEffect.robotic('input.wav',
                 'out.wav')

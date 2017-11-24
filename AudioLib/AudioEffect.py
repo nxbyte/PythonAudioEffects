@@ -37,9 +37,14 @@ class AudioEffect(object):
 	staticmethod
 	def robotic(input_path, output_path):
 		'''Applies a robotic effect to a given input'''
-		print ('Not Implemented')
+		sound = AudioProcessing(input_path)
+		sound.set_audio_pitch(2)
+		sound.set_echo(0.06)
+		sound.save_to_file(output_path)
 
 	@staticmethod
 	def ghost(input_path, output_path):
 		'''Applies a ghostly halloween effect to a given input'''
-		print ('Not Implemented')
+		sound = AudioProcessing(input_path)
+		sound.set_reverb(0.1)
+		sound.save_to_file(output_path)
