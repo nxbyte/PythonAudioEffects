@@ -61,6 +61,15 @@ class AudioProcessing(object):
 
 		self.audio_data = output_audio
 
+	def set_volume(self, level):
+		'''Sets the overall volume of the data via floating-point factor'''
+		output_audio = np.zeros(len(self.audio_data))
+
+		for count, e in enumerate(self.audio_data):
+			output_audio[count] = (e * level)
+
+		self.audio_data = output_audio
+
 	def set_reverse(self):
 		'''Reverses the audio'''
 		self.audio_data = self.audio_data[::-1]
@@ -95,8 +104,54 @@ class AudioProcessing(object):
 
 		# normalize (16bit)
 		result = ((2 ** (16 - 4)) * result/result.max())
-
 		self.audio_data = result.astype('int16')
+
+	def set_highpass(self, cutoff):
+		'''Puts data through a highpass filter'''
+		self.audio_data = self._butter_highpass_filter(self.audio_data, cutoff, self.sample_freq)
+
+	def set_lowpass(self, cutoff):
+		'''Puts data through a lowpass filter'''
+		self.audio_data = self._butter_lowpass_filter(self.audio_data, cutoff, self.sample_freq)
+
+	def set_bandpass(self, cutoff_low, cutoff_high):
+		'''Puts data through a lowpass filter'''
+		self.audio_data = self._butter_bandpass_filter(self.audio_data, [cutoff_low, cutoff_high], self.sample_freq)
+
+	def _butter_highpass_filter(self, data, cutoff, fs, order=5):
+		b, a = self._butter_highpass(cutoff, fs, order=order)
+		y = signal.filtfilt(b, a, data)
+		return y
+
+	def _butter_highpass(self, cutoff, fs, order=5):
+		nyq = 0.5 * fs
+		normal_cutoff = cutoff / nyq
+		b, a = signal.butter(order, normal_cutoff, btype='highpass', analog=False)
+		return b, a
+
+	def _butter_lowpass_filter(self, data, cutoff, fs, order=5):
+		b, a = self._butter_lowpass(cutoff, fs, order=order)
+		y = signal.filtfilt(b, a, data)
+		return y
+
+	def _butter_lowpass(self, cutoff, fs, order=5):
+		nyq = 0.5 * fs
+		normal_cutoff = cutoff / nyq
+		b, a = signal.butter(order, normal_cutoff, btype='lowpass', analog=False)
+		return b, a
+
+	def _butter_bandpass_filter(self, data, cutoff, fs, order=5):
+		b, a = self._butter_bandpass(cutoff, fs, order=order)
+		y = signal.filtfilt(b, a, data)
+		return y
+
+	def _butter_bandpass(self, cutoff, fs, order=5):
+		nyq = 0.5 * fs
+		normal_cutoff = np.zeros(2)
+		normal_cutoff[0] = cutoff[0] / nyq
+		normal_cutoff[1] = cutoff[1] / nyq
+		b, a = signal.butter(order, normal_cutoff, btype='bandpass', analog=False)
+		return b, a
 
 	@staticmethod
 	def convert_to_mono_audio(input_audio):
