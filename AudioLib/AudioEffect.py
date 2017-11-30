@@ -5,7 +5,7 @@
 
 	How to use:
 
-	from AudioLib.AudioEffect import AudioEffect
+	from AudioLib import AudioEffect
 
 	AudioEffect.echo('input.wav', 'output.wav')
 '''

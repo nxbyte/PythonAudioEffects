@@ -1,5 +1,5 @@
 
-from AudioLib.AudioEffect import AudioEffect
+from AudioLib import AudioEffect
 
 
 AudioEffect.ghost('youve-been-acting.wav', 'out_ghost.wav')
