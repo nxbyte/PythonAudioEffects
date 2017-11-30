@@ -164,15 +164,3 @@ class AudioProcessing(object):
 
 		return np.array(output_audio, dtype = 'int16')
 
-	def set_reverb(self, delay):
-		'''Applies reverb'''
-		#=====================================
-	
-		output_audio = read('gun2.wav')
-		output_audio = np.array(output_audio[1],dtype=int16)
-		output_audio = output_audio[0:len(self.audio_data)]
-
-		#out = signal.fftconvolve(self.audio_data, output_audio, mode='full')
-		out = np.convolve(self.audio_data, output_audio, 'full')
-		#np.savetxt('test.txt', out)
-		self.audio_data = out
