@@ -1,9 +1,11 @@
 
 from AudioLib import AudioEffect
 
+input_file_path = 'input2.wav'
+output_filename = 'output'
 
-AudioEffect.ghost('input.wav', 'out_ghost.wav')
-AudioEffect.robotic('input.wav', 'out_robotic.wav')
-AudioEffect.echo('input.wav', 'out_echo.wav')
-AudioEffect.radio('input.wav', 'out_radio.wav')
-AudioEffect.darth_vader('input.wav', 'out_vader.wav')
+AudioEffect.ghost(input_file_path, output_filename + '_ghost.wav')
+AudioEffect.robotic(input_file_path, output_filename + '_robotic.wav')
+AudioEffect.echo(input_file_path, output_filename + '_echo.wav')
+AudioEffect.radio(input_file_path, output_filename + '_radio.wav')
+AudioEffect.darth_vader(input_file_path, output_filename + '_vader.wav')
