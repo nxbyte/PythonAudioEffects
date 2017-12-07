@@ -20,20 +20,16 @@ class AudioEffect(object):
 	def darth_vader(input_path, output_path):
 		'''Applies a Darth Vader effect to a given input audio file'''
 		sound = AudioProcessing(input_path)
-		#sound.set_volume(20)
-		sound.set_audio_pitch(-2)
-		sound.set_audio_speed(.9)
-		sound.set_echo(0.008)
-		sound.set_bandpass(50, 4000)
-		sound.set_volume(4)
-		#sound.set_lowpass(3000)
+		sound.set_audio_speed(.8)
+		sound.set_echo(0.02)
+		sound.set_lowpass(2500)
 		sound.save_to_file(output_path)
 
 	@staticmethod
 	def echo(input_path, output_path):
 		'''Applies an echo effect to a given input audio file'''
 		sound = AudioProcessing(input_path)
-		sound.set_echo(0.1)
+		sound.set_echo(0.09)
 		sound.save_to_file(output_path)
 
 	@staticmethod
@@ -50,7 +46,6 @@ class AudioEffect(object):
 	def robotic(input_path, output_path):
 		'''Applies a robotic effect to a given input audio file'''
 		sound = AudioProcessing(input_path)
-		#sound.set_audio_pitch(1)
 		sound.set_volume(1.5)
 		sound.set_echo(0.01)
 		sound.set_bandpass(300, 4000)

@@ -22,6 +22,9 @@
 	# Add an echo to the audio
 	sound1.set_echo(1)
 
+	# Applies a bandpass filter between the (<low>, <high>) range of frequencies
+	sound.set_bandpass(50, 2600)
+
 	# Save the resulting processed audio data into a file
 	sound1.save_to_file('out.wav')
 '''
@@ -106,52 +109,28 @@ class AudioProcessing(object):
 		result = ((2 ** (16 - 4)) * result/result.max())
 		self.audio_data = result.astype('int16')
 
-	def set_highpass(self, cutoff):
-		'''Puts data through a highpass filter'''
-		self.audio_data = self._butter_highpass_filter(self.audio_data, cutoff, self.sample_freq)
+	def set_lowpass(self, cutoff_low, order=5):
+		'''Applies a low pass filter'''
+		nyquist = self.sample_freq / 2.0
+		cutoff = cutoff_low / nyquist
+		x, y = signal.butter(order, cutoff, btype='lowpass', analog=False)
+		self.audio_data = signal.filtfilt(x, y, self.audio_data)
 
-	def set_lowpass(self, cutoff):
-		'''Puts data through a lowpass filter'''
-		self.audio_data = self._butter_lowpass_filter(self.audio_data, cutoff, self.sample_freq)
+	def set_highpass(self, cutoff_high, order=5):
+		'''Applies a high pass filter'''
+		nyquist = self.sample_freq / 2.0
+		cutoff = cutoff_high / nyquist
+		x, y = signal.butter(order, cutoff, btype='highpass', analog=False)
+		self.audio_data = signal.filtfilt(x, y, self.audio_data)
 
-	def set_bandpass(self, cutoff_low, cutoff_high):
-		'''Puts data through a lowpass filter'''
-		self.audio_data = self._butter_bandpass_filter(self.audio_data, [cutoff_low, cutoff_high], self.sample_freq)
-
-	def _butter_highpass_filter(self, data, cutoff, fs, order=5):
-		b, a = self._butter_highpass(cutoff, fs, order=order)
-		y = signal.filtfilt(b, a, data)
-		return y
-
-	def _butter_highpass(self, cutoff, fs, order=5):
-		nyq = 0.5 * fs
-		normal_cutoff = cutoff / nyq
-		b, a = signal.butter(order, normal_cutoff, btype='highpass', analog=False)
-		return b, a
-
-	def _butter_lowpass_filter(self, data, cutoff, fs, order=5):
-		b, a = self._butter_lowpass(cutoff, fs, order=order)
-		y = signal.filtfilt(b, a, data)
-		return y
-
-	def _butter_lowpass(self, cutoff, fs, order=5):
-		nyq = 0.5 * fs
-		normal_cutoff = cutoff / nyq
-		b, a = signal.butter(order, normal_cutoff, btype='lowpass', analog=False)
-		return b, a
-
-	def _butter_bandpass_filter(self, data, cutoff, fs, order=5):
-		b, a = self._butter_bandpass(cutoff, fs, order=order)
-		y = signal.filtfilt(b, a, data)
-		return y
-
-	def _butter_bandpass(self, cutoff, fs, order=5):
-		nyq = 0.5 * fs
-		normal_cutoff = np.zeros(2)
-		normal_cutoff[0] = cutoff[0] / nyq
-		normal_cutoff[1] = cutoff[1] / nyq
-		b, a = signal.butter(order, normal_cutoff, btype='bandpass', analog=False)
-		return b, a
+	def set_bandpass(self, cutoff_low, cutoff_high, order=5):
+		'''Applies a band pass filter'''
+		cutoff = np.zeros(2)
+		nyquist = self.sample_freq / 2.0
+		cutoff[0] = cutoff_low / nyquist
+		cutoff[1] = cutoff_high / nyquist
+		x, y = signal.butter(order, cutoff, btype='bandpass', analog=False)
+		self.audio_data = signal.filtfilt(x, y, self.audio_data)
 
 	@staticmethod
 	def convert_to_mono_audio(input_audio):
@@ -163,4 +142,3 @@ class AudioProcessing(object):
 			output_audio.append((e[0] / 2) + (e[1] / 2))
 
 		return np.array(output_audio, dtype = 'int16')
-
