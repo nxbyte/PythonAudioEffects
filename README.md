@@ -11,7 +11,7 @@ Many movies have special effects added to the visuals and the audio to set the t
 ### Requirements
 
   * Python 2.7 or 3.x
-  * macOS or Linux (Windows not officially supported, but might work)
+  * Windows, macOS or Linux
   * numpy: `pip install numpy`
   * scipy: `pip install scipy`
 
