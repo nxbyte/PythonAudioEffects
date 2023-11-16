@@ -6,7 +6,9 @@
     
     Note   : Please change the code below to fit your needs.
 '''
-
+import sys 
+sys.path.append('<path_to_folder>/PythonAudioEffects')
+#EXAMPLE: In my case it was - sys.path.append('/home/pixel22/Projects/PythonAudioEffects')
 from AudioLib import AudioEffect
 
 input_file_path = 'input.wav'
