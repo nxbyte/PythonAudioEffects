@@ -134,11 +134,16 @@ class AudioProcessing(object):
 
 	@staticmethod
 	def convert_to_mono_audio(input_audio):
-		'''Returns a numpy array that represents the mono version of a stereo input'''
-		output_audio = []
-		temp_audio = input_audio.astype(float)
+		'''Returns a numpy array that represents the mono version of input audio'''
+		if input_audio.ndim == 1 or input_audio.shape[1] == 1:
+			# If the input is already mono, return it as is
+			output_audio = np.array(input_audio, dtype='float32')
+		elif input_audio.shape[1] == 2:
+			# If the input is stereo, convert it to mono (average both channels)
+			output_audio = np.mean(input_audio, axis=1)
+		else:
+			# For more than two channels, choose a strategy to handle multi-channel audio
+			# Here, simply take the first channel and discard the rest
+			output_audio = input_audio[:, 0]
 
-		for e in temp_audio:
-			output_audio.append((e[0] / 2) + (e[1] / 2))
-
-		return np.array(output_audio, dtype = 'int16')
+		return output_audio
