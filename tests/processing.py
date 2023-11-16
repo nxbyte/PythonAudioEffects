@@ -7,6 +7,10 @@
     Note   : Please change the code below to fit your needs.
 '''
 
+import sys
+sys.path.append('<path>/PythonAudioEffects')
+# EXAMPLE: In my case it was, sys.path.append('/home/pixel22/Projects/PythonAudioEffects')
+from AudioLib import AudioEffect
 from AudioLib.AudioProcessing import AudioProcessing
 
 sound1 = AudioProcessing('input.wav')
